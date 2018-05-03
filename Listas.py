@@ -143,14 +143,18 @@ def executar_Acoes(estado, acao):
 
 def fronteira(Estado, frontier):
     a = Estado.custo
+    s = 0
     if not frontier:
         frontier.append(Estado)
+        s = 1
     else:
         for i in range(len(frontier)):
             if a < frontier[i].custo:
                 frontier.insert(i, Estado)
+                s = 1
                 break
-
+    if s == 0:
+        frontier.append(Estado)
     return frontier
 
 
@@ -212,29 +216,51 @@ frontier = fronteira(E, frontier)
 q = Estado()
 lista_Explorados = list()
 
-for w in range(1000000):
+while frontier[0].puzzle != meta:
 
-    if frontier[0].puzzle != meta:
         q = frontier[0]
         explo = False
         frontier.pop(0)
-        # for g in range(len(lista_Explorados)):
-        #     if lista_Explorados[g].puzzle == q.puzzle:
-        #         explo = True
+        for g in range(len(lista_Explorados)):
+            if lista_Explorados[g].puzzle == q.puzzle:
+                explo = True
 
-        # if explo == False:
-        lista_Explorados.append(q)
-        b = Verifica_acao(q)
-        f = executar_Acoes(q, b)
-        for i in range(len(f)):
-            frontier = fronteira(f[i], frontier)
-    else:
-        print("Encontradp")
+        if explo == False:
+            lista_Explorados.append(q)
+            b = Verifica_acao(q)
+            f = executar_Acoes(q, b)
+            for i in range(len(f)):
+                frontier = fronteira(f[i], frontier)
+s = 0
+print("Resultado:\n")
+for j in range(3):
+    print(frontier[0].puzzle[s], frontier[0].puzzle[s + 1], frontier[0].puzzle[s + 2])
+    s = s + 3
+print("     caminho: ", frontier[i].caminho)
+print("     custo: ", frontier[i].custo, "\n")
 
-for i in range(len(frontier)):
-    print("Filho: ", i)
-    print(frontier[i].puzzle)
-    print("caminho: ", frontier[i].caminho)
-    print("custo: ", frontier[i].custo)
+# print("Fronteira\n")
+
+# for i in range(len(frontier)):
+#     print("   ", frontier[i].puzzle)
+#     print("    caminho: ", frontier[i].caminho)
+#     print("    custo: ", frontier[i].custo)
+
+# for i in range(len(frontier)):
+#     s = 0
+#     for j in range(3):
+#         print(frontier[i].puzzle[s], frontier[i].puzzle[s+1], frontier[i].puzzle[s+2])
+#         s = s + 3
+#     print("     caminho: ", frontier[i].caminho)
+#     print("     custo: ", frontier[i].custo,"\n")
+#
+# print("\n\nLista de Explorados\n")
+# for i in range(len(lista_Explorados)):
+#     s = 0
+#     for j in range(3):
+#         print(lista_Explorados[i].puzzle[s], lista_Explorados[i].puzzle[s+1], lista_Explorados[i].puzzle[s+2])
+#         s = s + 3
+#     print("     caminho: ", lista_Explorados[i].caminho)
+#     print("     custo: ", lista_Explorados[i].custo)
 
 # Deeved, o codigo ainda nao esta encontrando o resultado temos que rever a heuristica
